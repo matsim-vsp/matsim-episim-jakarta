@@ -21,27 +21,6 @@ that the project is a maven project. If not: `Right click on pom.xml -> import a
 The project uses Java 11. Usually a suitable SDK is packaged within IntelliJ or Eclipse. Otherwise, one must install a 
 suitable sdk manually, which is available [here](https://openjdk.java.net/)
 
-### Building and Running it locally
-
-You can build an executable jar-file by executing the following command:
-
-```sh
-./mvnw clean package
-```
-
-or on Windows:
-
-```sh
-mvnw.cmd clean package
-```
-
-This will download all necessary dependencies (it might take a while the first time it is run) and create a file `matsim-example-project-0.0.1-SNAPSHOT.jar` in the top directory. This jar-file can either be double-clicked to start the MATSim GUI, or executed with Java on the command line:
-
-```sh
-java -jar matsim-example-project-0.0.1-SNAPSHOT.jar
-```
-
-
 
 ### Licenses
 
