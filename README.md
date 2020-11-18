@@ -1,17 +1,4 @@
-# matsim-example-project
-
-A small example of how to use MATSim as a library.
-
-By default, this project uses the latest (pre-)release. In order to use a different version, edit `pom.xml`.
-
-A recommended directory structure is as follows:
-* `src` for sources
-* `original-input-data` for original input data (typically not in MATSim format)
-* `scenarios` for MATSim scenarios, i.e. MATSim input and output data.  A good way is the following:
-  * One subdirectory for each scenario, e.g. `scenarios/mySpecialScenario01`.
-  * This minimally contains a config file, a network file, and a population file.
-  * Output goes one level down, e.g. `scenarios/mySpecialScenario01/output-from-a-good-run/...`.
-  
+# MATSim Episim application for Jakarta
   
 ### Import into eclipse
 
@@ -57,7 +44,6 @@ java -jar matsim-example-project-0.0.1-SNAPSHOT.jar
 
 
 ### Licenses
-(The following paragraphs need to be adjusted according to the specifications of your project.)
 
 The **MATSim program code** in this repository is distributed under the terms of the [GNU General Public License as published by the Free Software Foundation (version 2)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html). The MATSim program code are files that reside in the `src` directory hierarchy and typically end with `*.java`.
 

@@ -3,21 +3,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.matsim</groupId>
-	<artifactId>matsim-example-project</artifactId>
+	<artifactId>matsim-episim-jakarta</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>MATSim example project</name>
-	<description>MATSim example project</description>
+	<name>MATSim Episim application for Jakarta</name>
+	<description>MATSim Episim application for Jakarta</description>
 
 	<properties>
-		<!-- release -->
-		<!-- <matsim.version>12.0</matsim.version> -->
-
-		<!-- smapshot release -->
-		<!--<matsim.version>0.13.0-SNAPSHOT</matsim.version>-->
-
-		<!-- weekly release -->
-		<matsim.version>12.0-2019w48-SNAPSHOT</matsim.version>
+		<matsim.version>12.0</matsim.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
@@ -43,6 +36,10 @@
 			<id>ojo-snapshots</id>
 			<url>https://oss.jfrog.org/libs-snapshot</url>
 		</repository>	
+		<repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
 	</repositories>
 
 	<dependencies>
@@ -78,45 +75,11 @@
 			<version>${matsim.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!--some contribs:-->
 		<dependency>
-			<groupId>org.matsim.contrib</groupId>
-			<artifactId>minibus</artifactId>
-			<version>${matsim.version}</version>
+	   		<groupId>com.github.matsim-org</groupId>
+	    	<artifactId>matsim-episim</artifactId>
+	    	<version>ba3ef70baf</version>
 		</dependency>
-		<dependency>
-			<groupId>org.matsim.contrib</groupId>
-			<artifactId>otfvis</artifactId>
-			<version>${matsim.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.matsim.contrib</groupId>
-			<artifactId>roadpricing</artifactId>
-			<version>${matsim.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.matsim.contrib</groupId>
-			<artifactId>taxi</artifactId>
-			<version>${matsim.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.matsim.contrib</groupId>
-			<artifactId>av</artifactId>
-			<version>${matsim.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.matsim.contrib</groupId>
-			<artifactId>freight</artifactId>
-			<version>${matsim.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.matsim.contrib</groupId>
-			<artifactId>bicycle</artifactId>
-			<version>${matsim.version}</version>
-		</dependency>
-		<!--Dependencies from where stated above to here are added as a service; they can be removed if you don't need them-->
-
 	</dependencies>
 
 	<build>
