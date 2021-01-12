@@ -78,7 +78,7 @@
 		<dependency>
 	   		<groupId>com.github.matsim-org</groupId>
 	    	<artifactId>matsim-episim</artifactId>
-	    	<version>ba3ef70baf</version>
+	    	<version>e20e780</version>
 		</dependency>
 	</dependencies>
 

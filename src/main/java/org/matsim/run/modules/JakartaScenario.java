@@ -29,6 +29,7 @@ import java.util.Map;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.episim.EpisimConfigGroup;
+import org.matsim.episim.VaccinationConfigGroup;
 import org.matsim.episim.model.AgeDependentInfectionModelWithSeasonality;
 import org.matsim.episim.model.AgeDependentProgressionModel;
 import org.matsim.episim.model.ContactModel;
@@ -36,6 +37,7 @@ import org.matsim.episim.model.FaceMask;
 import org.matsim.episim.model.InfectionModel;
 import org.matsim.episim.model.ProgressionModel;
 import org.matsim.episim.model.SymmetricContactModel;
+import org.matsim.episim.model.VaccinationModel;
 import org.matsim.episim.policy.FixedPolicy;
 import org.matsim.episim.policy.Restriction;
 
@@ -124,6 +126,7 @@ public class JakartaScenario extends AbstractModule {
 		// Second, set the daily infected agents rates.
 		// -> these numbers are given in infected agents per day
 		// -> these numbers are daily numbers that are valid from provided start day
+		// -> check sample size. If you set 5 here, in the 1pct scenario --> 500 infections per day
 		Map<LocalDate, Integer> infectionsPerDay = new HashMap<>();
 		infectionsPerDay.put(LocalDate.parse("2020-02-15"), 5);
 		episimConfig.setInfections_pers_per_day(infectionsPerDay);
@@ -132,15 +135,30 @@ public class JakartaScenario extends AbstractModule {
 		
 		// Here we set the restrictions. A possible starting point could be the google mobility reports: https://www.google.com/covid19/mobility/
 		episimConfig.setPolicy(FixedPolicy.class, FixedPolicy.config()
-				.restrict("2020-03-15", 0.85, DEFAULT_ACTIVITIES) //only 85% of out-of-home activities still occur
-				.restrict("2020-03-22", 0.65, DEFAULT_ACTIVITIES)
-				.restrict("2020-03-29", 0.6, DEFAULT_ACTIVITIES)
-				.restrict("2020-06-10", 0.75, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-03-15"), 0.85, DEFAULT_ACTIVITIES) //only 85% of out-of-home activities still occur
+				.restrict(LocalDate.parse("2020-03-22"), 0.8, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-03-29"), 0.75, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-03-29"), 0, "education")			//example for closing and opening schools
+				.restrict(LocalDate.parse("2020-05-29"), 1, "education")
+				.restrict(LocalDate.parse("2020-06-10"), 0.9, DEFAULT_ACTIVITIES)
 
 				//90% of public transport passengers wear a cloth mask 
-				.restrict("2020-04-01", Restriction.ofMask(FaceMask.CLOTH, 0.9), "pt")
+				.restrict(LocalDate.parse("2020-04-01"), Restriction.ofMask(FaceMask.CLOTH, 0.9), "pt")
 				.build()
 		);
+		
+		VaccinationConfigGroup vaccinationConfigGroup = ConfigUtils.addOrGetModule(config, VaccinationConfigGroup.class);
+		int totalCapacity = 50000;
+		int vaccinationsPerDay = 2000;
+		LocalDate startDateOfVaccinations = LocalDate.parse("2021-01-01");
+		vaccinationConfigGroup.setEffectiveness(0.9);
+		vaccinationConfigGroup.setDaysBeforeFullEffect(28);		
+		vaccinationConfigGroup.setVaccinationCapacity_pers_per_day(Map.of(
+					episimConfig.getStartDate(), 0,
+					startDateOfVaccinations, (int) (vaccinationsPerDay),
+					startDateOfVaccinations.plusDays(totalCapacity/vaccinationsPerDay), 0
+					));
+		
 
 		return config;
 	}
@@ -150,6 +168,7 @@ public class JakartaScenario extends AbstractModule {
 		bind(ContactModel.class).to(SymmetricContactModel.class).in(Singleton.class);
 		bind(ProgressionModel.class).to(AgeDependentProgressionModel.class).in(Singleton.class);
 		bind(InfectionModel.class).to(AgeDependentInfectionModelWithSeasonality.class).in(Singleton.class);
+		bind(VaccinationModel.class).to(VaccinationModel.class).in(Singleton.class);
 	}
 
 }
