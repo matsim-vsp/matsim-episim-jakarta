@@ -36,6 +36,7 @@ import org.matsim.episim.model.ContactModel;
 import org.matsim.episim.model.FaceMask;
 import org.matsim.episim.model.InfectionModel;
 import org.matsim.episim.model.ProgressionModel;
+import org.matsim.episim.model.RandomVaccination;
 import org.matsim.episim.model.SymmetricContactModel;
 import org.matsim.episim.model.VaccinationModel;
 import org.matsim.episim.policy.FixedPolicy;
@@ -168,7 +169,7 @@ public class JakartaScenario extends AbstractModule {
 		bind(ContactModel.class).to(SymmetricContactModel.class).in(Singleton.class);
 		bind(ProgressionModel.class).to(AgeDependentProgressionModel.class).in(Singleton.class);
 		bind(InfectionModel.class).to(AgeDependentInfectionModelWithSeasonality.class).in(Singleton.class);
-		bind(VaccinationModel.class).to(VaccinationModel.class).in(Singleton.class);
+		bind(VaccinationModel.class).to(RandomVaccination.class).in(Singleton.class);
 	}
 
 }
