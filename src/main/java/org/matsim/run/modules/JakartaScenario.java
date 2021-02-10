@@ -104,7 +104,7 @@ public class JakartaScenario extends AbstractModule {
 //		config.global().setCoordinateSystem("EPSG:3310");	
 		
 		if (sample == 1) {
-			config.plans().setInputFile(scenarioLocation + "1pct/jakarta_population_reduced-for-episim.xml.gz");
+			config.plans().setInputFile(scenarioLocation + "1pct/jakarta_population_withDistricts_reduced-for-episim.xml.gz");
 			episimConfig.setInputEventsFile(scenarioLocation + "1pct/40.events_existing_1pct_reduced-for-episim.xml.gz");
 			episimConfig.setSampleSize(0.01);
 		}
