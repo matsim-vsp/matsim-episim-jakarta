@@ -20,11 +20,13 @@ public class AddHomeToAttributes {
 			for (Plan plan : person.getPlans()) {
 				for (PlanElement element : plan.getPlanElements()) {
 					if (element instanceof Activity) {
-						double x = ((Activity) element).getCoord().getX();
-						double y = ((Activity) element).getCoord().getY();
-						person.getAttributes().putAttribute("homeX", x);
-						person.getAttributes().putAttribute("homeY", y);
-						continue;
+						if (((Activity) element).getType().contains("home")) {
+							double x = ((Activity) element).getCoord().getX();
+							double y = ((Activity) element).getCoord().getY();
+							person.getAttributes().putAttribute("homeX", x);
+							person.getAttributes().putAttribute("homeY", y);
+							continue;
+						}
 					}
 				}
 			}
