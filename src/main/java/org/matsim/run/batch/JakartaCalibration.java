@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 
 /**
- * Runs for la model. To run all combinations set below in Params just start RunParallel.java.
+ * Runs for jakarta model. To run all combinations set below in Params just start RunParallel.java.
  * Batch runs are useful to calibrate the model, to run multiple seeds or to investigate the effects of different restrictions.
  */
 public class JakartaCalibration implements BatchRun<JakartaCalibration.Params> {

@@ -57,7 +57,13 @@
 			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>30.0-jre</version>
+		</dependency>
+		
 		<dependency>
 			<!--MATSim test infrastructure.  Not transitive.-->
 			<groupId>org.matsim</groupId>
@@ -78,7 +84,7 @@
 		<dependency>
 	   		<groupId>com.github.matsim-org</groupId>
 	    	<artifactId>matsim-episim</artifactId>
-	    	<version>e20e780</version>
+	    	<version>87458c9</version>
 		</dependency>
 	</dependencies>
 
