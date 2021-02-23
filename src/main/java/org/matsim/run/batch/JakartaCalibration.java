@@ -31,7 +31,7 @@ public class JakartaCalibration implements BatchRun<JakartaCalibration.Params> {
 
 	@Override
 	public Metadata getMetadata() {
-		return Metadata.of("ja", "calibration");
+		return Metadata.of("jakarta", "calibration");
 	}
 
 	@Override
