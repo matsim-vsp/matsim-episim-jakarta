@@ -78,7 +78,7 @@ public class CreateBatteryForCluster<T> implements Callable<Integer> {
 	@CommandLine.Option(names = "--run-version", description = "Run version", defaultValue = "v15")
 	private String runVersion;
 
-	@CommandLine.Option(names = "--step-size", description = "Step size of the job array", defaultValue = "32")
+	@CommandLine.Option(names = "--step-size", description = "Step size of the job array", defaultValue = "24")
 	private int stepSize;
 
 	@CommandLine.Option(names = "--jvm-opts", description = "Additional options for JVM", defaultValue = "-Xms82G -Xmx82G -XX:+UseParallelGC")
@@ -165,7 +165,7 @@ public class CreateBatteryForCluster<T> implements Callable<Integer> {
 				// Dollar signs must be escaped
 				"export EPISIM_SETUP='" + setup.getName() + "'",
 				"export EPISIM_PARAMS='" + params.getName() + "'",
-				"export EPISIM_INPUT='/scratch/projects/bzz0020/episim-input'", //TODO set input location
+				"export EPISIM_INPUT='/scratch/usr/bexewert/input-jakarta'", //TODO set input location
 				"export EPISIM_OUTPUT='" + batchOutput.toString() + "'",
 				"",
 				String.format("jid=$(sbatch --parsable --export=ALL --array=1-%d --ntasks-per-socket=%d --job-name=%s runParallel.sh)",
