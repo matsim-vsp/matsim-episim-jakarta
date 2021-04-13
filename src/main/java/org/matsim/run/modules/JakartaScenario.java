@@ -38,6 +38,7 @@ import org.matsim.episim.model.InfectionModel;
 import org.matsim.episim.model.ProgressionModel;
 import org.matsim.episim.model.RandomVaccination;
 import org.matsim.episim.model.SymmetricContactModel;
+import org.matsim.episim.model.VaccinationByAge;
 import org.matsim.episim.model.VaccinationModel;
 import org.matsim.episim.policy.FixedPolicy;
 import org.matsim.episim.policy.Restriction;
@@ -55,9 +56,8 @@ public class JakartaScenario extends AbstractModule {
 	 * Activity names of the default params from {@link #addDefaultParams(EpisimConfigGroup)}.
 	 */
 	public static final String[] DEFAULT_ACTIVITIES = {
-			"work", "education", "school", "shop",
-			"leisure", "other", "outside",
-			"freight_unloading", "freight_loading"
+			"work", "education", "shop",
+			"leisure", "other", "home"
 	};
 
 	/**
@@ -70,18 +70,9 @@ public class JakartaScenario extends AbstractModule {
 		config.getOrAddContainerParams("home").setContactIntensity(1.0);
 		config.getOrAddContainerParams("work").setContactIntensity(1.47);
 		config.getOrAddContainerParams("education").setContactIntensity(5.5);		
-		config.getOrAddContainerParams("school").setContactIntensity(11.0); // many people, small space, no air exchange
 		config.getOrAddContainerParams("shop").setContactIntensity(0.88);
 		config.getOrAddContainerParams("leisure").setContactIntensity(9.24);
 		config.getOrAddContainerParams("other").setContactIntensity(9.24); // ???
-		config.getOrAddContainerParams("outside").setContactIntensity(1.0); // ???
-		config.getOrAddContainerParams("freight_unloading").setContactIntensity(0.0); // ???
-		config.getOrAddContainerParams("freight_loading").setContactIntensity(0.0); // ???
-
-
-
-
-		// TODO: add contact intensities for further activity types!
 		
 		config.getOrAddContainerParams("quarantine_home").setContactIntensity(1.0);
 	}
@@ -90,8 +81,9 @@ public class JakartaScenario extends AbstractModule {
 	@Singleton
 	public Config config() {
 		
-		int sample = 1; // 1 = 1pct; 10 = 10pct; 25 = 25pct
-		String scenarioLocation = "../shared-svn/projects/episim-jakarta/matsim-input-files/";
+		int sample = 10; // 1 = 1pct; 10 = 10pct; 25 = 25pct
+//		String scenarioLocation = "../shared-svn/projects/episim-jakarta/matsim-input-files/";
+		String scenarioLocation = "../../../../input-jakarta/";
 
 		Config config = ConfigUtils.createConfig(new EpisimConfigGroup());
 		EpisimConfigGroup episimConfig = ConfigUtils.addOrGetModule(config, EpisimConfigGroup.class);
@@ -109,14 +101,18 @@ public class JakartaScenario extends AbstractModule {
 			episimConfig.setSampleSize(0.01);
 		}
 		else if (sample == 10) {
-			// TODO
+//			config.plans().setInputFile(scenarioLocation + "10pct/jakarta_population_withDistricts_reduced-for-episim.xml.gz");
+//			episimConfig.setInputEventsFile(scenarioLocation + "10pct/40.events_10pct_reduced-for-episim.xml.gz");
+			config.plans().setInputFile(scenarioLocation + "jakarta_population_withDistricts_reduced-for-episim.xml.gz");
+			episimConfig.setInputEventsFile(scenarioLocation + "40.events_10pct_reduced-for-episim.xml.gz");
+			episimConfig.setSampleSize(0.1);
 		}
 		else if (sample == 25) {
 			// TODO	
 		}
 		else throw new RuntimeException("Sample size does not exist! Aborting...");
 		
-		episimConfig.setCalibrationParameter(2);		
+		episimConfig.setCalibrationParameter(1.7E-5);	
 		episimConfig.setFacilitiesHandling(EpisimConfigGroup.FacilitiesHandling.snz);
 		episimConfig.setStartDate("2020-02-15");
 		
@@ -129,19 +125,23 @@ public class JakartaScenario extends AbstractModule {
 		// -> these numbers are daily numbers that are valid from provided start day
 		// -> check sample size. If you set 5 here, in the 1pct scenario --> 500 infections per day
 		Map<LocalDate, Integer> infectionsPerDay = new HashMap<>();
-		infectionsPerDay.put(LocalDate.parse("2020-02-15"), 5);
+		infectionsPerDay.put(LocalDate.parse("2020-03-01"), 5);
 		episimConfig.setInfections_pers_per_day(infectionsPerDay);
 		
 		addDefaultParams(episimConfig);
 		
 		// Here we set the restrictions. A possible starting point could be the google mobility reports: https://www.google.com/covid19/mobility/
 		episimConfig.setPolicy(FixedPolicy.class, FixedPolicy.config()
-				.restrict(LocalDate.parse("2020-03-15"), 0.85, DEFAULT_ACTIVITIES) //only 85% of out-of-home activities still occur
-				.restrict(LocalDate.parse("2020-03-22"), 0.8, DEFAULT_ACTIVITIES)
-				.restrict(LocalDate.parse("2020-03-29"), 0.75, DEFAULT_ACTIVITIES)
-				.restrict(LocalDate.parse("2020-03-29"), 0, "education")			//example for closing and opening schools
-				.restrict(LocalDate.parse("2020-05-29"), 1, "education")
-				.restrict(LocalDate.parse("2020-06-10"), 0.9, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-03-01"), 1, DEFAULT_ACTIVITIES) //only 85% of out-of-home activities still occur
+				.restrict(LocalDate.parse("2020-03-27"), 0.7, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-04-14"), 0.6, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-06-09"), 0.65, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-06-30"), 0.7, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-08-09"), 0.73, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2020-12-04"), 0.8, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2021-01-01"), 0.75, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2021-01-19"), 0.70, DEFAULT_ACTIVITIES)
+				.restrict(LocalDate.parse("2021-02-01"), 0.73, DEFAULT_ACTIVITIES)
 
 				//90% of public transport passengers wear a cloth mask 
 				.restrict(LocalDate.parse("2020-04-01"), Restriction.ofMask(FaceMask.CLOTH, 0.9), "pt")
@@ -169,7 +169,7 @@ public class JakartaScenario extends AbstractModule {
 		bind(ContactModel.class).to(SymmetricContactModel.class).in(Singleton.class);
 		bind(ProgressionModel.class).to(AgeDependentProgressionModel.class).in(Singleton.class);
 		bind(InfectionModel.class).to(AgeDependentInfectionModelWithSeasonality.class).in(Singleton.class);
-		bind(VaccinationModel.class).to(RandomVaccination.class).in(Singleton.class);
+		bind(VaccinationModel.class).to(VaccinationByAge.class).in(Singleton.class);
 	}
 
 }
