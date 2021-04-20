@@ -21,6 +21,15 @@ that the project is a maven project. If not: `Right click on pom.xml -> import a
 The project uses Java 11. Usually a suitable SDK is packaged within IntelliJ or Eclipse. Otherwise, one must install a 
 suitable sdk manually, which is available [here](https://openjdk.java.net/)
 
+### Prepare EpiSim
+
+The following steps are necessary to setup this EpiSim toul with the starting point of a standard MATSim events file and teh regarding population:
+1. Filter the events so that you only have the needed events      --> use FilterEvents class
+2. You can remove plans from you population to save memory        --> use RemovePlansFromPopulation class
+3. Add home to agent attributes (if this information is missing)  --> use AddHomeToAttributes class
+4. Add district as a attribute of each agent (shapefile needed)   --> use DistrictLookup class
+5. Setup jakarta scenario                                         --> JakartaScenario class
+6. Run scenario                                                   --> RunEpisim class
 
 ### Licenses
 
